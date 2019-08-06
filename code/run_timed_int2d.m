@@ -7,11 +7,11 @@ G = compute_gram_matrix(X);
 
 %% Compute the weight matrix. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-W = G + lambda * m * eye(m);
+W = G + size(X, 2) * eye(size(X, 2));
 
 %% Compute the value function for the output samples. %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Vk = compute_value_functions_int2d(N, X, Y, W);
+Vk = compute_value_functions_int2d(4, X, Y, W);
 
 %% Compute the beta coefficients. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,12 +21,12 @@ Beta = Beta./sum(abs(Beta), 1);
 
 %% Compute the safety probabilities. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Pr = zeros(N, mt);
+Pr = zeros(4, size(Xt, 2));
 
-Pr(N, :) = double(all(abs(Xt) <= 1, 1));
+Pr(4, :) = double(all(abs(Xt) <= 1, 1));
 
 in_safe_set = double(all(abs(Xt) <= 1, 1));
 
-for k = N-1:-1:1
+for k = 3:-1:1
   Pr(k, :) = in_safe_set.*(Vk(k+1, :)*Beta);
 end

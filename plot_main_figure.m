@@ -14,37 +14,77 @@ function plot_main_figure()
 % run_terminal_hitting_cwh();
 
 int2d = load('results_int2d.mat');
-int2d_beta = load('results_int2d_beta.mat');
 int2d_dp = load('results_int2d_dp.mat');
+int2d_beta = load('results_int2d_beta.mat');
+cwh = load('results_cwh.mat');
 
 %%
-% fh = figure;
-%
-% fh.Units = 'points';
-% fh.Position = [0, 0, 516, 344];
 figure('Units', 'points', ...
-        'Position', [0, 0, 516, 172])
+       'Position', [0, 0, 245, 172])
+
+ax1 = subplot(1, 2, 1, 'Units', 'points');
+plot_int2d(ax1, int2d.x, int2d.y, int2d.Pr(1, :), ...
+           'FigureTitle', '(a)');
+
+colorbar(ax1, 'off');
+ax1.Position = [30, 25, 80, 137];
+ax1.XLabel.Visible = 'off';
+
+ax2 = subplot(1, 2, 2, 'Units', 'points');
+plot_int2d(ax2, int2d.x, int2d.y, abs(int2d.Pr(1, :) - int2d_dp.Pr), ...
+           'FigureTitle', '(b)');
+
+ax2.YAxis.Visible = 'off';
+ax2.Position = [129, 25, 80, 137];
+ax2.XLabel.Visible = 'off';
+
+ax3 = axes('Visible', 'off');
+ax3.Units = 'points';
+ax3.Position = [30 25 179 137];
+
+ax3.XLabel.String = '$x_{1}$';
+ax3.XLabel.Interpreter = 'latex';
+ax3.XLabel.Visible = 'on';
+set(gca, 'FontSize', 8, 'FontName','TimesNewRoman');
+
+savefig(gcf, './plots/main_figure_1.fig');
+saveas(gcf, './plots/main_figure_1.eps', 'epsc');
 
 %%
-ax = subplot(1, 4, 1, 'Units', 'points');
-ax.Position = [0 + 30, 25, 95, 137];
-plot_int2d(ax, int2d.x, int2d.y, int2d.Pr(1, :));
+figure('Units', 'points', ...
+       'Position', [0, 0, 245, 172])
 
-%%
-ax = subplot(1, 4, 2, 'Units', 'points');
-ax.Position = [129 + 30, 25, 95, 137];
-plot_int2d(ax, int2d_dp.x, int2d_dp.y, int2d_dp.Pr);
+ax1 = subplot(1, 2, 1, 'Units', 'points');
+plot_int2d(ax1, int2d.x, int2d.y, int2d_beta.Pr(3, :), ...
+           'FigureTitle', '(a)');
 
-%%
-ax = subplot(1, 4, 3, 'Units', 'points');
-ax.Position = [258 + 30, 25, 95, 137];
-plot_int2d(ax, int2d.x, int2d.y, abs(int2d.Pr(1, :) - int2d_dp.Pr));
+colorbar(ax1, 'off');
+ax1.Position = [30, 25, 80, 137];
+set(ax1, 'FontSize', 8, 'FontName','Times');
+% ax1.XLabel.Visible = 'off';
 
-%%
-ax = subplot(1, 4, 4, 'Units', 'points');
-ax.Position = [387 + 30, 25, 95, 137];
-plot_int2d(ax, int2d.x, int2d.y, int2d_beta.Pr(1, :));
+ax2 = subplot(1, 2, 2, 'Units', 'points');
+plot_cwh(ax2, cwh.x, cwh.y, cwh.Pr(end-5, :), 'FigureTitle', '(b)');
+% plot_int2d(ax2, int2d.x, int2d.y, abs(int2d.Pr(1, :) - int2d_dp.Pr), ...
+           % 'FigureTitle', '(b)');
 
-%%
-savefig(gcf, './plots/main_figure.fig');
-saveas(gcf, './plots/main_figure.eps', 'epsc');
+% ax2.YAxis.Visible = 'off';
+ax2.Position = [129, 25, 80, 137];
+ax2.XLabel.Interpreter = 'latex';
+ax2.XLabel.String = '$z_{1}$';
+ax2.YLabel.Interpreter = 'latex';
+ax2.YLabel.String = '$z_{2}$';
+set(ax2, 'FontSize', 8, 'FontName','Times');
+% ax2.XLabel.Visible = 'off';
+
+% ax3 = axes('Visible', 'off');
+% ax3.Units = 'points';
+% ax3.Position = [30 25 184 137];
+% 
+% ax3.XLabel.String = '$x_{1}$';
+% ax3.XLabel.Interpreter = 'latex';
+% ax3.XLabel.Visible = 'on';
+% set(gca, 'FontSize', 8, 'FontName','Times');
+
+savefig(gcf, './plots/main_figure_2.fig');
+saveas(gcf, './plots/main_figure_2.eps', 'epsc');

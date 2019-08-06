@@ -1,4 +1,12 @@
-function plot_int2d(ax, x, y, z)
+function plot_int2d(ax, x, y, z, varargin)
+% PLOT_INT2D Plots the double integrator figure.
+
+p = inputParser;
+addParameter(p, 'FigureTitle', '(a)');
+
+parse(p, varargin{:});
+
+ft = p.Results.FigureTitle;
 
 if size(z, 1) == 1
   Z = reshape(z(1, :), sqrt(length(z(1, :))), sqrt(length(z(1, :))));
@@ -11,7 +19,7 @@ ph = surf(ax, x, y, Z);
 ph.EdgeColor = 'none';
 ph.LineStyle = 'none';
 
-title('(a)', 'FontWeight', 'normal');
+title(ft, 'FontWeight', 'normal');
 xlabel('$x_{1}$', 'Interpreter', 'latex')
 ylabel('$x_{2}$', 'Interpreter', 'latex')
 

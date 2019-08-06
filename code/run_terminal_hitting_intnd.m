@@ -1,4 +1,4 @@
-function varargout = run_terminal_hitting_int2d(varargin)
+function varargout = run_terminal_hitting_intnd(varargin)
 % RUN_INT2D_TERMINAL Run the terminal-hitting time problem for a 2-D integrator.
 %
 %   RUN_INT2D_TERMINAL Computes the terminal-hitting time probabilities for a

@@ -34,10 +34,13 @@ w = p.Results.Disturbance;
 %% Generate samples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Compute input/output samples for the dynamics.
-[X, Y] = generate_samples_cwh(m);
-m = round(sqrt(m))^2;
+% [X, Y] = generate_samples_cwh(m);
+load('samples_cwh.mat');
+% m = round(sqrt(m))^2;
+m = 883;
 
-Xt = generate_samples_cwh(mt, 'SampleMode', 'uniform', 'XLim', [-1, 1], 'YLim', [-1, 1]);
+Xt = generate_samples_cwh(mt, 'SampleMode', 'uniform', ...
+                          'TLim', [5*pi/4, 7*pi/4]);
 
 mt = round(sqrt(mt))^2;
 
@@ -80,18 +83,24 @@ Beta = Beta./sum(abs(Beta), 1);
 
 Pr = zeros(N, mt);
 
-Pr(N, :) = double(all(abs(Xt) <= 1, 1));
+Pr(N, :) = double(abs(Xt(1, :)) <= 0.1 & ...
+                  -0.1 <= Xt(2, :) & Xt(2, :) <= 0 & ...
+                  abs(Xt(3, :)) <= 0.01 & ...
+                  abs(Xt(4, :)) <= 0.01);
 
-in_safe_set = double(all(abs(Xt) <= 1, 1));
+in_safe_set = double(abs(Xt(1, :)) <= abs(Xt(2, :) - eps) & ...
+                     abs(Xt(3, :)) <= 0.05 & ...
+                     abs(Xt(4, :)) <= 0.05);;
 
 for k = N-1:-1:1
   Pr(k, :) = in_safe_set.*(Vk(k+1, :)*Beta);
 end
 
 x = Xt(1, :);
-x = reshape(x, sqrt(length(Xt(1, :))), sqrt(length(Xt(1, :))));
-x = x(1, :);
-y = x;
+% x = reshape(x, sqrt(length(Xt(1, :))), sqrt(length(Xt(1, :))));
+% x = x(1, :);
+% y = x;
+y = Xt(2, :);
 
 switch nargout
 case 0

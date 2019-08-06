@@ -25,10 +25,10 @@ Beta = W\Beta;
 Beta = Beta./sum(abs(Beta), 1);
 
 % Compute the terminal value function on Y.
-Vk(N, :) = double(all(abs(Y) <= 1, 1));
+Vk(N, :) = double(all(abs(Y) <= 1 + eps, 1));
 
 % Compute the value functions for k < N via bacward recursion on Y.
-in_safe_set = double(all(abs(Y) <= 1, 1));
+in_safe_set = double(all(abs(Y) <= 1 + eps, 1));
 
 for k = N-1:-1:1
   Vk(k, :) = in_safe_set.*(Vk(k+1, :)*Beta);

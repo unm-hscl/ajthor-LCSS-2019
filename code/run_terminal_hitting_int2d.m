@@ -16,7 +16,7 @@ function varargout = run_terminal_hitting_int2d(varargin)
 %
 %   Vk(x) * (K + lambda*m*I)^-1 * K(x, X)
 
-rng(0);
+% rng(0);
 
 p = inputParser;
 addParameter(p, 'TimeHorizon', 3);
@@ -96,9 +96,9 @@ Beta = Beta./sum(abs(Beta), 1);
 
 Pr = zeros(N, mt);
 
-Pr(N, :) = double(all(abs(Xt) <= 1, 1));
+Pr(N, :) = double(all(abs(Xt) <= 1 + eps, 1));
 
-in_safe_set = double(all(abs(Xt) <= 1, 1));
+in_safe_set = double(all(abs(Xt) <= 1 + eps, 1));
 
 for k = N-1:-1:1
   Pr(k, :) = in_safe_set.*(Vk(k+1, :)*Beta);
